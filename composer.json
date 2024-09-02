@@ -1,0 +1,38 @@
+{
+    "name": "bleuren/laravel-api",
+    "description": "A package to develop APIs with Laravel using Repository and Service patterns",
+    "keywords": [
+        "bleuren",
+        "laravel",
+        "api",
+        "repository",
+        "service"
+    ],
+    "homepage": "https://github.com/bleuren/laravel-api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bleuren",
+            "email": "bleuren421@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "type": "library",
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^11.0",
+        "illuminate/database": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bleuren\\LaravelApi\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bleuren\\LaravelApi\\Providers\\LaravelApiServiceProvider"
+            ]
+        }
+    }
+}
