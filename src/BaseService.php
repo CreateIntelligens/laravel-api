@@ -49,4 +49,30 @@ abstract class BaseService implements ServiceInterface
 
         return response()->json(null, 204);
     }
+
+    public function getFiltered(array $params): JsonResponse
+    {
+        $query = $this->repository->newQuery();
+
+        if (isset($params['filters'])) {
+            $query->applyFilters($params['filters']);
+        }
+
+        if (isset($params['sorts'])) {
+            $query->applySorts($params['sorts']);
+        }
+
+        if (isset($params['includes'])) {
+            $query->applyIncludes($params['includes']);
+        }
+
+        if (isset($params['page'])) {
+            $perPage = $params['per_page'] ?? 15;
+            $result = $query->paginate($perPage);
+        } else {
+            $result = $query->get();
+        }
+
+        return response()->json($result);
+    }
 }

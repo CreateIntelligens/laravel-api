@@ -64,9 +64,11 @@ class MakeRepositoryCommand extends Command
         $bindingCode = "\$this->app->bind(\\App\\Contracts\\{$name}RepositoryInterface::class, \\App\\Repositories\\{$name}Repository::class);";
 
         if (Str::contains($content, 'public function register()')) {
-            $pattern = '/public function register\(\).*?\{.*?}/s';
-            $replacement = "public function register()\n    {\n        $bindingCode\n        //\n    }";
-            $content = preg_replace($pattern, $replacement, $content);
+            $pattern = '/public function register\(\).*?{/s';
+            if (preg_match($pattern, $content, $matches)) {
+                $position = strpos($content, $matches[0]) + strlen($matches[0]);
+                $content = substr_replace($content, "\n        $bindingCode", $position, 0);
+            }
         } else {
             $content .= "\n\n    public function register()\n    {\n        $bindingCode\n    }";
         }

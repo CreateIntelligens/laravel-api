@@ -14,9 +14,14 @@ abstract class BaseRepository implements RepositoryInterface
         $this->model = $model;
     }
 
+    public function newQuery()
+    {
+        return new QueryBuilder($this->model->newQuery());
+    }
+
     public function all()
     {
-        return $this->model->all();
+        return $this->newQuery()->get();
     }
 
     public function find($id)

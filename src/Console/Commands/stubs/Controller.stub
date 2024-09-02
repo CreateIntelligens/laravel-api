@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Contracts\{{serviceName}}ServiceInterface;
 use Illuminate\Http\Request;
+use Bleuren\LaravelApi\Http\Traits\HandlesQueryParameters;
 
 class {{controllerName}}Controller extends Controller
 {
+    use HandlesQueryParameters;
+
     protected ${{serviceName}}Service;
 
     public function __construct({{serviceName}}ServiceInterface ${{serviceName}}Service)
@@ -14,9 +17,10 @@ class {{controllerName}}Controller extends Controller
         $this->{{serviceName}}Service = ${{serviceName}}Service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->{{serviceName}}Service->all();
+        $params = $this->getQueryParameters($request);
+        return $this->{{serviceName}}Service->getFiltered($params);
     }
 
     public function store(Request $request)
