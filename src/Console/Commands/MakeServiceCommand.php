@@ -64,17 +64,22 @@ class MakeServiceCommand extends Command
         $bindingCode = "\$this->app->bind(\\App\\Contracts\\{$name}ServiceInterface::class, \\App\\Services\\{$name}Service::class);";
 
         if (Str::contains($content, 'public function register()')) {
-            $content = str_replace(
-                'public function register()',
-                "public function register()\n    {\n        $bindingCode",
-                $content
-            );
+            $pattern = '/public function register\(\).*?\{.*?}/s';
+            $replacement = preg_replace('/(\s*})$/', "\n        $bindingCode\\1", $this->getRegisterMethodContent($content));
+            $content = preg_replace($pattern, $replacement, $content);
         } else {
             $content .= "\n\n    public function register()\n    {\n        $bindingCode\n    }";
         }
 
         $this->files->put($providerPath, $content);
         $this->info('AppServiceProvider updated successfully.');
+    }
+
+    protected function getRegisterMethodContent($content)
+    {
+        preg_match('/public function register\(\).*?\{.*?}/s', $content, $matches);
+
+        return $matches[0] ?? "public function register()\n    {\n        //\n    }";
     }
 
     protected function getStub($type)

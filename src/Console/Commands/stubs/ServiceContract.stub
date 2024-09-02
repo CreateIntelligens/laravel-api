@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Contracts;
+
+use Bleuren\LaravelApi\Contracts\ServiceInterface;
+
+interface {{serviceName}}ServiceInterface extends ServiceInterface
+{
+    // Add any additional methods specific to this service
+}

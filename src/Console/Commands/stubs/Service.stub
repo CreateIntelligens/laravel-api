@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Services;
+
+use Bleuren\LaravelApi\BaseService;
+use App\Contracts\{{serviceName}}ServiceInterface;
+use App\Contracts\{{repositoryName}}RepositoryInterface;
+
+class {{serviceName}}Service extends BaseService implements {{serviceName}}ServiceInterface
+{
+    public function __construct({{repositoryName}}RepositoryInterface $repository)
+    {
+        parent::__construct($repository);
+    }
+}

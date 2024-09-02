@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Contracts;
+
+use Bleuren\LaravelApi\Contracts\RepositoryInterface;
+
+interface {{repositoryName}}RepositoryInterface extends RepositoryInterface
+{
+    // Add any additional methods specific to this repository
+}

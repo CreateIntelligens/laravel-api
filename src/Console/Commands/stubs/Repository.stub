@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Models\{{modelName}};
+use Bleuren\LaravelApi\BaseRepository;
+use App\Contracts\{{repositoryName}}RepositoryInterface;
+
+class {{repositoryName}}Repository extends BaseRepository implements {{repositoryName}}RepositoryInterface
+{
+    public function __construct({{modelName}} $model)
+    {
+        parent::__construct($model);
+    }
+}
