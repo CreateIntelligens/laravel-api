@@ -47,13 +47,21 @@ class MakeControllerCommand extends Command
         $routeContent = $this->files->get($routePath);
 
         $newRoute = "\nRoute::apiResource('".Str::plural(strtolower($name))."', {$name}Controller::class);";
-        $useStatement = "\nuse App\Http\Controllers\\{$name}Controller;";
+        $useStatement = "use App\Http\Controllers\\{$name}Controller;";
 
+        // 檢查是否已經有了 use 語句
         if (! Str::contains($routeContent, $useStatement)) {
-            $routeContent = $useStatement.$routeContent;
+            // 在文件開頭添加 use 語句，但在 <?php 標籤之後
+            $routeContent = preg_replace(
+                '/^<\?php\s+/i',
+                "<?php\n\n$useStatement\n",
+                $routeContent
+            );
         }
 
+        // 檢查是否已經有了路由
         if (! Str::contains($routeContent, $newRoute)) {
+            // 在文件末尾添加新路由
             $routeContent .= $newRoute;
         }
 
