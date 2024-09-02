@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Contracts\{{serviceName}}ServiceInterface;
+use Illuminate\Http\Request;
+
+class {{controllerName}}Controller extends Controller
+{
+    protected ${{serviceName}}Service;
+
+    public function __construct({{serviceName}}ServiceInterface ${{serviceName}}Service)
+    {
+        $this->{{serviceName}}Service = ${{serviceName}}Service;
+    }
+
+    public function index()
+    {
+        return $this->{{serviceName}}Service->all();
+    }
+
+    public function store(Request $request)
+    {
+        return $this->{{serviceName}}Service->create($request->all());
+    }
+
+    public function show($id)
+    {
+        return $this->{{serviceName}}Service->find($id);
+    }
+
+    public function update(Request $request, $id)
+    {
+        return $this->{{serviceName}}Service->update($id, $request->all());
+    }
+
+    public function destroy($id)
+    {
+        return $this->{{serviceName}}Service->delete($id);
+    }
+}

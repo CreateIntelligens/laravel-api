@@ -2,6 +2,7 @@
 
 namespace Bleuren\LaravelApi\Providers;
 
+use Bleuren\LaravelApi\Console\Commands\MakeControllerCommand;
 use Bleuren\LaravelApi\Console\Commands\MakeRepositoryCommand;
 use Bleuren\LaravelApi\Console\Commands\MakeServiceCommand;
 use Illuminate\Support\ServiceProvider;
@@ -14,6 +15,7 @@ class LaravelApiServiceProvider extends ServiceProvider
             $this->commands([
                 MakeRepositoryCommand::class,
                 MakeServiceCommand::class,
+                MakeControllerCommand::class,
             ]);
         }
 
