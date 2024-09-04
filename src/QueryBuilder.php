@@ -16,11 +16,55 @@ class QueryBuilder implements QueryBuilderInterface
 
     public function applyFilters(array $filters)
     {
-        foreach ($filters as $field => $value) {
-            $this->query->where($field, $value);
+        foreach ($filters as $field => $conditions) {
+            $this->applyFilter($field, $conditions);
         }
 
         return $this;
+    }
+
+    protected function applyFilter($field, $conditions)
+    {
+        if (! is_array($conditions)) {
+            $this->query->where($field, $conditions);
+
+            return;
+        }
+
+        foreach ($conditions as $operator => $value) {
+            switch ($operator) {
+                case '$eq':
+                    $this->query->where($field, $value);
+                    break;
+                case '$ne':
+                    $this->query->where($field, '!=', $value);
+                    break;
+                case '$gt':
+                    $this->query->where($field, '>', $value);
+                    break;
+                case '$lt':
+                    $this->query->where($field, '<', $value);
+                    break;
+                case '$gte':
+                    $this->query->where($field, '>=', $value);
+                    break;
+                case '$lte':
+                    $this->query->where($field, '<=', $value);
+                    break;
+                case '$contains':
+                    $this->query->where($field, 'like', "%$value%");
+                    break;
+                case '$not_contains':
+                    $this->query->where($field, 'not like', "%$value%");
+                    break;
+                case '$in':
+                    $this->query->whereIn($field, $value);
+                    break;
+                case '$not_in':
+                    $this->query->whereNotIn($field, $value);
+                    break;
+            }
+        }
     }
 
     public function applySorts(array $sorts)

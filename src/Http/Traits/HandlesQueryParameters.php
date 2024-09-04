@@ -19,20 +19,57 @@ trait HandlesQueryParameters
 
     protected function getFilters(Request $request)
     {
-        return $request->input('filter', []);
+        $filters = $request->input('filter', []);
+
+        return $this->parseFilters($filters);
+    }
+
+    protected function parseFilters($filters)
+    {
+        $parsedFilters = [];
+        foreach ($filters as $field => $value) {
+            if (is_array($value)) {
+                $parsedFilters[$field] = $this->parseFilterOperators($value);
+            } else {
+                $parsedFilters[$field] = $value;
+            }
+        }
+
+        return $parsedFilters;
+    }
+
+    protected function parseFilterOperators($conditions)
+    {
+        $validOperators = ['$eq', '$ne', '$gt', '$lt', '$gte', '$lte', '$contains', '$not_contains', '$in', '$not_in'];
+        $parsedConditions = [];
+        foreach ($conditions as $operator => $value) {
+            if (in_array($operator, $validOperators)) {
+                $parsedConditions[$operator] = $value;
+            }
+        }
+
+        return $parsedConditions;
     }
 
     protected function getSorts(Request $request)
     {
+        $sortString = $request->input('sort');
+        if (empty($sortString)) {
+            return [];
+        }
         $sorts = [];
-        if ($request->has('sort')) {
-            $sortParams = explode(',', $request->input('sort'));
-            foreach ($sortParams as $param) {
-                $direction = 'asc';
-                if (strpos($param, '-') === 0) {
-                    $direction = 'desc';
-                    $param = substr($param, 1);
-                }
+        $sortParams = explode(',', $sortString);
+        foreach ($sortParams as $param) {
+            $param = trim($param);
+            if (empty($param)) {
+                continue;
+            }
+            $direction = 'asc';
+            if (strpos($param, '-') === 0) {
+                $direction = 'desc';
+                $param = substr($param, 1);
+            }
+            if (! empty($param)) {
                 $sorts[$param] = $direction;
             }
         }
@@ -47,6 +84,6 @@ trait HandlesQueryParameters
             return [];
         }
 
-        return explode(',', $includeString);
+        return array_filter(explode(',', $includeString), 'strlen');
     }
 }
