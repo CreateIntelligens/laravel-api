@@ -28,9 +28,10 @@ class {{controllerName}}Controller extends Controller
         return $this->{{serviceName}}Service->create($request->all());
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
-        return $this->{{serviceName}}Service->find($id);
+        $params = $this->getQueryParameters($request);
+        return $this->{{serviceName}}Service->find($id, $params);
     }
 
     public function update(Request $request, $id)

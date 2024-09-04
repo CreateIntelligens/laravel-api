@@ -24,9 +24,14 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->newQuery()->get();
     }
 
-    public function find($id)
+    public function find($id, array $includes = [])
     {
-        return $this->model->find($id);
+        $query = $this->newQuery();
+        if (! empty($includes)) {
+            $query->applyIncludes($includes);
+        }
+
+        return $query->find($id);
     }
 
     public function create(array $data)

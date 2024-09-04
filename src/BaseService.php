@@ -22,9 +22,10 @@ abstract class BaseService implements ServiceInterface
         return response()->json($data);
     }
 
-    public function find($id): JsonResponse
+    public function find($id, array $params = []): JsonResponse
     {
-        $data = $this->repository->find($id);
+        $includes = $params['includes'] ?? [];
+        $data = $this->repository->find($id, $includes);
 
         return response()->json($data);
     }

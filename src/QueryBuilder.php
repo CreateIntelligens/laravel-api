@@ -83,6 +83,11 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    public function find($id)
+    {
+        return $this->query->findOrFail($id);
+    }
+
     public function paginate(?int $perPage = null)
     {
         return $this->query->paginate($perPage);
